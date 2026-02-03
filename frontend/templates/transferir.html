@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Transferir - Banco Pichincha{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-exchange-alt"></i> Realizar Transferencia</h1>
+        <p>Completa los datos para realizar una transferencia</p>
+    </div>
+    
+    <div class="transfer-container">
+        <form method="POST" class="transfer-form" id="transferForm">
+            <div class="form-card">
+                <h3><i class="fas fa-wallet"></i> Cuenta de Origen</h3>
+                
+                <div class="form-group">
+                    <label for="cuenta_origen">Seleccione su cuenta</label>
+                    <select id="cuenta_origen" name="cuenta_origen" class="form-control" required onchange="actualizarSaldo()">
+                        <option value="">Seleccione una cuenta...</option>
+                        {% for cuenta in cuentas %}
+                        <option value="{{ cuenta.numero_cuenta }}" data-saldo="{{ cuenta.saldo }}">
+                            {{ cuenta.numero_cuenta }} - {{ cuenta.tipo_cuenta }} (Saldo: ${{ "%.2f"|format(cuenta.saldo) }})
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="saldo-disponible" id="saldoDisponible" style="display: none;">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Saldo disponible: <strong id="saldoActual">$0.00</strong></span>
+                </div>
+            </div>
+            
+            <div class="form-card">
+                <h3><i class="fas fa-user-check"></i> Cuenta de Destino</h3>
+                
+                <div class="form-group">
+                    <label for="tipo_transferencia">Tipo de Transferencia</label>
+                    <select id="tipo_transferencia" name="tipo_transferencia" class="form-control" required>
+                        <option value="">Seleccione el tipo...</option>
+                        <option value="Entre cuentas propias">Entre mis cuentas Pichincha</option>
+                        <option value="A otras cuentas Pichincha">A otras cuentas Pichincha</option>
+                        <option value="A otros bancos">A otros bancos</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cuenta_destino">Número de cuenta destino</label>
+                    <input 
+                        type="text" 
+                        id="cuenta_destino" 
+                        name="cuenta_destino" 
+                        class="form-control" 
+                        placeholder="Ingrese el número de cuenta"
+                        required
+                    >
+                </div>
+            </div>
+            
+            <div class="form-card">
+                <h3><i class="fas fa-dollar-sign"></i> Detalles de la Transferencia</h3>
+                
+                <div class="form-group">
+                    <label for="monto">Monto a Transferir</label>
+                    <div class="input-group">
+                        <span class="input-prefix">$</span>
+                        <input 
+                            type="number" 
+                            id="monto" 
+                            name="monto" 
+                            class="form-control" 
+                            placeholder="0.00"
+                            step="0.01"
+                            min="0.01"
+                            required
+                            onchange="validarMonto()"
+                        >
+                    </div>
+                    <small id="errorMonto" class="form-error" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i> Saldo insuficiente
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="concepto">Concepto / Descripción</label>
+                    <textarea 
+                        id="concepto" 
+                        name="concepto" 
+                        class="form-control" 
+                        rows="3"
+                        placeholder="Ingrese una descripción o concepto (opcional)"
+                        maxlength="200"
+                    ></textarea>
+                </div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">
+                    <i class="fas fa-times"></i> Cancelar
+                </a>
+                <button type="submit" class="btn btn-primary" id="btnTransferir">
+                    <i class="fas fa-paper-plane"></i> Realizar Transferencia
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+let saldoActual = 0;
+
+function actualizarSaldo() {
+    const select = document.getElementById('cuenta_origen');
+    const saldoDiv = document.getElementById('saldoDisponible');
+    const saldoSpan = document.getElementById('saldoActual');
+    
+    if (select.value) {
+        const option = select.options[select.selectedIndex];
+        saldoActual = parseFloat(option.dataset.saldo);
+        saldoSpan.textContent = '$' + saldoActual.toFixed(2);
+        saldoDiv.style.display = 'flex';
+    } else {
+        saldoDiv.style.display = 'none';
+        saldoActual = 0;
+    }
+    validarMonto();
+}
+
+function validarMonto() {
+    const montoInput = document.getElementById('monto');
+    const errorMonto = document.getElementById('errorMonto');
+    const btnTransferir = document.getElementById('btnTransferir');
+    const monto = parseFloat(montoInput.value) || 0;
+    
+    if (saldoActual > 0 && monto > saldoActual) {
+        errorMonto.style.display = 'block';
+        btnTransferir.disabled = true;
+    } else {
+        errorMonto.style.display = 'none';
+        btnTransferir.disabled = false;
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Iniciar Sesión - Banco Pichincha{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fas fa-user-circle"></i>
+            <h2>Iniciar Sesión</h2>
+            <p>Ingresa tu cédula para acceder</p>
+        </div>
+        
+        <form method="POST" class="auth-form">
+            <div class="form-group">
+                <label for="cedula">
+                    <i class="fas fa-id-card"></i> Cédula
+                </label>
+                <input 
+                    type="text" 
+                    id="cedula" 
+                    name="cedula" 
+                    class="form-control" 
+                    placeholder="Ingrese su número de cédula"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    required
+                >
+                <small class="form-text">Ingrese 10 dígitos</small>
+            </div>
+            
+            <button type="submit" class="btn btn-primary btn-block">
+                <i class="fas fa-sign-in-alt"></i> Ingresar
+            </button>
+        </form>
+        
+        <div class="auth-footer">
+            <p>¿No tienes una cuenta?</p>
+            <a href="{{ url_for('registro') }}" class="link">Regístrate aquí</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
