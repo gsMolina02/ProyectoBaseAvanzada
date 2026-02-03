@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Banco Pichincha{% endblock %}
+
+{% block content %}
+<div class="container dashboard-container">
+    <div class="page-header">
+        <h1><i class="fas fa-chart-line"></i> Mi Panel de Control</h1>
+        <p>Gestiona tus cuentas y transacciones</p>
+    </div>
+    
+    <div class="cards-grid">
+        {% if cuentas %}
+            {% for cuenta in cuentas %}
+            <div class="account-card">
+                <div class="account-header">
+                    <div class="account-type">
+                        <i class="fas fa-{{ 'piggy-bank' if cuenta.tipo_cuenta == 'Ahorros' else 'wallet' }}"></i>
+                        <span>Cuenta de {{ cuenta.tipo_cuenta }}</span>
+                    </div>
+                    <span class="account-status status-{{ cuenta.estado.lower() }}">
+                        {{ cuenta.estado }}
+                    </span>
+                </div>
+                
+                <div class="account-number">
+                    <small>Número de Cuenta</small>
+                    <h3>{{ cuenta.numero_cuenta }}</h3>
+                </div>
+                
+                <div class="account-balance">
+                    <small>Saldo Disponible</small>
+                    <h2>${{ "%.2f"|format(cuenta.saldo) }}</h2>
+                </div>
+                
+                <div class="account-actions">
+                    <a href="{{ url_for('transferir') }}" class="btn btn-sm btn-primary">
+                        <i class="fas fa-paper-plane"></i> Transferir
+                    </a>
+                    <a href="{{ url_for('historial') }}" class="btn btn-sm btn-secondary">
+                        <i class="fas fa-list"></i> Ver Movimientos
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <h3>No tienes cuentas registradas</h3>
+                <p>Crea tu primera cuenta para comenzar a realizar transferencias</p>
+                <a href="{{ url_for('crear_cuenta') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Crear Cuenta
+                </a>
+            </div>
+        {% endif %}
+    </div>
+    
+    {% if cuentas %}
+    <div class="quick-actions">
+        <h2><i class="fas fa-bolt"></i> Acciones Rápidas</h2>
+        <div class="actions-grid">
+            <a href="{{ url_for('transferir') }}" class="action-btn">
+                <i class="fas fa-exchange-alt"></i>
+                <span>Nueva Transferencia</span>
+            </a>
+            <a href="{{ url_for('historial') }}" class="action-btn">
+                <i class="fas fa-history"></i>
+                <span>Ver Historial</span>
+            </a>
+            <a href="{{ url_for('crear_cuenta') }}" class="action-btn">
+                <i class="fas fa-plus-circle"></i>
+                <span>Crear Cuenta</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Historial - Banco Pichincha{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-history"></i> Historial de Transferencias</h1>
+        <p>Consulta todas tus transacciones realizadas</p>
+    </div>
+    
+    {% if transferencias %}
+    <div class="table-container">
+        <table class="transfer-table">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Referencia</th>
+                    <th>Cuenta Origen</th>
+                    <th>Cuenta Destino</th>
+                    <th>Tipo</th>
+                    <th>Monto</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transferencia in transferencias %}
+                <tr>
+                    <td>{{ transferencia.fecha_transferencia }}</td>
+                    <td><span class="reference">{{ transferencia.referencia }}</span></td>
+                    <td>{{ transferencia.cuenta_origen }}</td>
+                    <td>{{ transferencia.cuenta_destino }}</td>
+                    <td><span class="transfer-type">{{ transferencia.tipo_transferencia }}</span></td>
+                    <td><strong class="amount">${{ "%.2f"|format(transferencia.monto) }}</strong></td>
+                    <td>
+                        <span class="status-badge status-{{ transferencia.estado.lower() }}">
+                            {{ transferencia.estado }}
+                        </span>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('comprobante', id=transferencia.id) }}" class="btn btn-sm btn-info">
+                            <i class="fas fa-file-alt"></i> Ver
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <h3>No hay transferencias registradas</h3>
+        <p>Aún no has realizado ninguna transferencia</p>
+        <a href="{{ url_for('transferir') }}" class="btn btn-primary">
+            <i class="fas fa-paper-plane"></i> Realizar Transferencia
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

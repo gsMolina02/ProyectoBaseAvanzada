@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Comprobante - Banco Pichincha{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <h1><i class="fas fa-receipt"></i> Comprobante de Transferencia</h1>
+    </div>
+    
+    <div class="comprobante-container">
+        <div class="comprobante-card">
+            <div class="comprobante-header">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2>¡Transferencia Exitosa!</h2>
+                <p class="comprobante-status">{{ transferencia.estado }}</p>
+            </div>
+            
+            <div class="comprobante-body">
+                <div class="comprobante-section">
+                    <h3><i class="fas fa-hashtag"></i> Información de la Transacción</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Referencia:</span>
+                            <span class="info-value reference-number">{{ transferencia.referencia }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Fecha y Hora:</span>
+                            <span class="info-value">{{ transferencia.fecha_transferencia }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Tipo de Transferencia:</span>
+                            <span class="info-value">{{ transferencia.tipo_transferencia }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comprobante-section">
+                    <h3><i class="fas fa-exchange-alt"></i> Detalles de Cuentas</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Cuenta Origen:</span>
+                            <span class="info-value">{{ transferencia.cuenta_origen }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Cuenta Destino:</span>
+                            <span class="info-value">{{ transferencia.cuenta_destino }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="comprobante-section">
+                    <h3><i class="fas fa-dollar-sign"></i> Monto</h3>
+                    <div class="monto-transferido">
+                        <span class="monto-label">Monto Transferido:</span>
+                        <span class="monto-value">${{ "%.2f"|format(transferencia.monto) }}</span>
+                    </div>
+                </div>
+                
+                {% if transferencia.concepto %}
+                <div class="comprobante-section">
+                    <h3><i class="fas fa-comment"></i> Concepto</h3>
+                    <p class="concepto-text">{{ transferencia.concepto }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="comprobante-footer">
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                    <i class="fas fa-home"></i> Volver al Inicio
+                </a>
+                <a href="{{ url_for('transferir') }}" class="btn btn-success">
+                    <i class="fas fa-paper-plane"></i> Nueva Transferencia
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+@media print {
+    .navbar, .footer, .comprobante-footer { display: none; }
+    .comprobante-card { box-shadow: none; border: 2px solid #000; }
+}
+</style>
+{% endblock %}

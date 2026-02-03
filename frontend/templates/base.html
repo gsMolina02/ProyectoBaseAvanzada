@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Banco Pichincha{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-brand">
+                <img src="https://www.pichincha.com/images/logo-banco-pichincha.svg" alt="Banco Pichincha" class="logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <h1 style="display: none; color: #FFD100; font-size: 24px; margin: 0;">BANCO PICHINCHA</h1>
+            </div>
+            
+            {% if session.cliente_id %}
+            <div class="navbar-menu">
+                <a href="{{ url_for('dashboard') }}" class="nav-link">
+                    <i class="fas fa-home"></i> Inicio
+                </a>
+                <a href="{{ url_for('transferir') }}" class="nav-link">
+                    <i class="fas fa-exchange-alt"></i> Transferir
+                </a>
+                <a href="{{ url_for('historial') }}" class="nav-link">
+                    <i class="fas fa-history"></i> Historial
+                </a>
+                <a href="{{ url_for('crear_cuenta') }}" class="nav-link">
+                    <i class="fas fa-plus-circle"></i> Nueva Cuenta
+                </a>
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>{{ session.cliente_nombre }}</span>
+                </div>
+                <a href="{{ url_for('logout') }}" class="nav-link logout">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container">
+                {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">
+                    <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }}"></i>
+                    {{ message }}
+                    <button class="close-alert" onclick="this.parentElement.style.display='none'">×</button>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Banco Pichincha - Sistema de Transferencias</p>
+            <p>Todos los derechos reservados</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

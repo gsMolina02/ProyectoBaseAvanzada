@@ -1,0 +1,38 @@
+# Ignorar entornos virtuales
+venv/
+env/
+ENV/
+
+# Ignorar archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Archivos de configuración local
+.env
+*.env.local
+
+# Base de datos
+*.db
+*.sqlite
+*.sqlite3
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Carpetas de distribución
+dist/
+build/
+*.egg-info/

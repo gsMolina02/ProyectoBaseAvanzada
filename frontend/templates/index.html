@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Banco Pichincha{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Bienvenido a Banco Pichincha</h1>
+            <p class="hero-subtitle">Sistema de Transferencias Bancarias</p>
+            <p class="hero-description">
+                Realiza tus transferencias de manera rápida, segura y confiable.
+                Gestiona tus cuentas con la tecnología más avanzada.
+            </p>
+            <div class="hero-buttons">
+                <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                </a>
+                <a href="{{ url_for('registro') }}" class="btn btn-secondary btn-lg">
+                    <i class="fas fa-user-plus"></i> Registrarse
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="features">
+    <div class="container">
+        <h2 class="section-title">Nuestros Servicios</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-exchange-alt"></i>
+                </div>
+                <h3>Transferencias Rápidas</h3>
+                <p>Realiza transferencias entre cuentas Pichincha y a otros bancos de manera instantánea.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Seguridad Garantizada</h3>
+                <p>Protección total de tus datos y transacciones con tecnología de última generación.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-history"></i>
+                </div>
+                <h3>Historial Completo</h3>
+                <p>Consulta el historial de todas tus transacciones en cualquier momento.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Acceso 24/7</h3>
+                <p>Disponible las 24 horas del día, los 7 días de la semana.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
