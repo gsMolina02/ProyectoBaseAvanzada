@@ -148,7 +148,7 @@ def cuentas():
     if request.method == 'GET':
         cliente_id = request.args.get('cliente_id')
         if cliente_id:
-            cuentas = Cuenta.query.filter_by(cliente_id=cliente_id).all()
+            cuentas = Cuenta.query.filter_by(cliente_id=int(cliente_id)).all()
         else:
             cuentas = Cuenta.query.all()
         return jsonify([cuenta.to_dict() for cuenta in cuentas]), 200
